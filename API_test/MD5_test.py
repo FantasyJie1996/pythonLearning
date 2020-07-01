@@ -13,13 +13,16 @@ def md5_create(secret):
 url = 'http://ec.upiot.net/api/v2/1b5771d34b9096e54ca005fa394111ce7d01b894/card_no_list/?_sign=35de6ff58ff3eee77d8941d1d62b2e00'
 
 def get_card_list(url):
-    response = requests.get(url)
-    return response.text
+    headers = {'Content-Type': 'application/json'}
+    response = requests.get(url,headers=headers)
 
-list_card = get_card_list(url)
-print(list_card)
-dict_card = json.loads(list_card)
-print(len(dict_card["data"]["rows"]))
+    return response.text.encode('utf-8').decode('unicode_escape')
 
-with open("./card_list",'w') as f:
-    f.write(list_card)
+if __name__ == "__main__":
+    list_card = get_card_list(url)
+    print(list_card)
+    dict_card = json.loads(list_card)
+    print(len(dict_card["data"]["rows"]))
+
+    with open("./card_list",'w') as f:
+        f.write(list_card)
